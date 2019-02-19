@@ -15,20 +15,25 @@ def translate_sequence(rna_sequence, genetic_code):
     """
 
 
+  
+
     aminostring = ""
     i = 0
     currentacid = ""
-    for item in rna_sequence:
-        if len(rna_sequence) < 3:
-            print("This sequence is too short!")
-            break
-        elif i == 3:
-            if currentacid in genetic_code.keys():
-                aminostring += genetic_code[currentacid]
-                i = 0
-        else:
-            currentacid += item
-            i += 1
+    if len(rna_sequence) < 3:
+        return ""
+        for item in rna_sequence:
+            if len(rna_sequence) < 3:
+                return ""
+            elif (rna_sequence[0:3] == ("UAA" or "UGA" or "UAG")):
+                return ""
+            elif i == 3:
+                if currentacid in genetic_code.keys():
+                    aminostring += genetic_code[currentacid]
+                    i = 0
+            else:
+                currentacid += item
+                i += 1
     
     print(currentacid)
     print(aminostring)
@@ -58,9 +63,9 @@ def get_all_translations(rna_sequence, genetic_code):
                 if seq in genetic_code.keys():
                     translated += genetic_code[seq]
         elif len(rna_sequence) < 3:
-            print("This one's not long enough!")
+            return ""
         else:
-            print("Didn't start with \'AUG\'!")
+            return ""
 
 
 
@@ -112,7 +117,24 @@ def reverse_and_complement(sequence):
 
     If `sequence` is empty, and empty string is returned.
     """
-    pass
+
+    compdict = {
+    "A" : "T",
+    "G" : "C",
+    "C" : "G",
+    "T" : "A"
+    }
+
+    reversed = sequence[::-1]
+    revcomplement = ""
+
+    if len(reversed) > 0:
+        for item in reversed:
+            if item in compdict.keys():
+                revcomplement += str(compdict[item])
+        return revcomplement
+    else:
+        return ""
 
 def get_longest_peptide(rna_sequence, genetic_code):
     """Get the longest peptide encoded by an RNA sequence.
@@ -125,7 +147,24 @@ def get_longest_peptide(rna_sequence, genetic_code):
     If no amino acids can be translated from `rna_sequence` nor its reverse and
     complement, an empty list is returned.
     """
-    pass
+    reversed = rna_sequence[::-1]
+
+    currentacid = ""
+    totalaminos = ""
+    i = 0
+    for letter in rna_sequence:
+        if i < 3:
+            currentacid += letter
+            i += 1
+        elif i == 3:
+            if currentacid in genetic_code.keys():
+                totalaminos += genetic_code[currentacid]
+                i = 0
+                currentacid = ""
+        else:
+            return []
+
+
 
 
 
