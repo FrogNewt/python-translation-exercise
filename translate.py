@@ -13,12 +13,28 @@ def translate_sequence(rna_sequence, genetic_code):
     If `rna_sequence` is less than 3 bases long, or starts with a stop codon,
     an empty string is returned.
     """
-    aminos = []
+
+
+    aminostring = ""
+    i = 0
+    currentacid = ""
     for item in rna_sequence:
-        aminos.append("BOW WOW OR RUFF")
-    return aminos
+        if len(rna_sequence) < 3:
+            print("This sequence is too short!")
+            break
+        elif i == 3:
+            if currentacid in genetic_code.keys():
+                aminostring += genetic_code[currentacid]
+                i = 0
+        else:
+            currentacid += item
+            i += 1
     
- 
+    print(currentacid)
+    print(aminostring)
+    return aminostring
+    
+
 
 
 def get_all_translations(rna_sequence, genetic_code):
@@ -41,11 +57,12 @@ def get_all_translations(rna_sequence, genetic_code):
             for seq in rna_sequence:
                 if seq in genetic_code.keys():
                     translated += genetic_code[seq]
+        elif len(rna_sequence) < 3:
+            print("This one's not long enough!")
         else:
             print("Didn't start with \'AUG\'!")
 
 
-    pass
 
 def get_reverse(sequence):
     """Reverse orientation of `sequence`.
@@ -54,7 +71,12 @@ def get_reverse(sequence):
 
     If `sequence` is empty, and empty string is returned.
     """
-    pass
+    reversed = sequence[::-1]
+
+    if len(sequence) == 0:
+        return ""
+    else:
+        return reversed
 
 def get_complement(sequence):
     """Get the complement of `sequence`.
@@ -72,9 +94,13 @@ def get_complement(sequence):
 
     complement = ""
 
-    for item in sequence:
-        if item in compdict.keys():
-            complement += str(compdict[item])
+    if len(sequence) > 0:
+        for item in sequence:
+            if item in compdict.keys():
+                complement += str(compdict[item])
+        return complement
+    else:
+        return ""
 
 
 
@@ -99,8 +125,7 @@ def get_longest_peptide(rna_sequence, genetic_code):
     If no amino acids can be translated from `rna_sequence` nor its reverse and
     complement, an empty list is returned.
     """
-    longest_peptide = "DFLASJDFOJASOEIJFAOSIJFAOPIEJSF"
-    return longest_peptide
+    pass
 
 
 
