@@ -13,14 +13,12 @@ def translate_sequence(rna_sequence, genetic_code):
     If `rna_sequence` is less than 3 bases long, or starts with a stop codon,
     an empty string is returned.
     """
-    for codon in rna_sequence:
-        if codon in genetic_code.keys():
-            print(genetic.code[codon])
-
-    """if (len(rna_sequence) < 3) or (rna_sequence == "UAG") or (rna_sequence == "UGA") or (rna_sequence == "UAA"):
-        print("ERROR")
-    else:
-        print("Well, we got SOMETHING.")"""
+    aminos = []
+    for item in rna_sequence:
+        aminos.append("BOW WOW OR RUFF")
+    return aminos
+    
+ 
 
 
 def get_all_translations(rna_sequence, genetic_code):
@@ -38,6 +36,15 @@ def get_all_translations(rna_sequence, genetic_code):
     If no amino acids can be translated from `rna_sequence`, an empty list is
     returned.
     """
+    for seq in rna_sequence:
+        if "AUG" in rna_sequence:
+            for seq in rna_sequence:
+                if seq in genetic_code.keys():
+                    translated += genetic_code[seq]
+        else:
+            print("Didn't start with \'AUG\'!")
+
+
     pass
 
 def get_reverse(sequence):
@@ -51,12 +58,25 @@ def get_reverse(sequence):
 
 def get_complement(sequence):
     """Get the complement of `sequence`.
-
+    
     Returns a string with the complementary sequence of `sequence`.
 
     If `sequence` is empty, and empty string is returned.
     """
-    pass
+    compdict = {
+    "A" : "T",
+    "G" : "C",
+    "C" : "G",
+    "T" : "A"
+    }
+
+    complement = ""
+
+    for item in sequence:
+        if item in compdict.keys():
+            complement += str(compdict[item])
+
+
 
 def reverse_and_complement(sequence):
     """Get the reversed and complemented form of `sequence`.
