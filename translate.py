@@ -23,9 +23,7 @@ def translate_sequence(rna_sequence, genetic_code):
     if len(rna_sequence) < 3:
         return ""
         for item in rna_sequence:
-            if len(rna_sequence) < 3:
-                return ""
-            elif (rna_sequence[0:3] == ("UAA" or "UGA" or "UAG")):
+            if (rna_sequence[0:3] == ("UAA" or "UGA" or "UAG")):
                 return ""
             elif i == 3:
                 if currentacid in genetic_code.keys():
@@ -81,7 +79,7 @@ def get_reverse(sequence):
     if len(sequence) == 0:
         return ""
     else:
-        return reversed
+        return reversed.upper()
 
 def get_complement(sequence):
     """Get the complement of `sequence`.
@@ -90,22 +88,17 @@ def get_complement(sequence):
 
     If `sequence` is empty, and empty string is returned.
     """
-    compdict = {
-    "A" : "T",
-    "G" : "C",
-    "C" : "G",
-    "T" : "A"
-    }
+    compdict = {"A":"U", "G":"C", "C":"G", "U":"A"}
 
     complement = ""
 
-    if len(sequence) > 0:
-        for item in sequence:
-            if item in compdict.keys():
-                complement += str(compdict[item])
-        return complement
-    else:
+    if sequence==0:
         return ""
+    else:
+        for letter in sequence:
+            if letter in compdict.keys().lower():
+                complement = complement + compdict[letter]
+        return complement.upper()
 
 
 
@@ -119,22 +112,22 @@ def reverse_and_complement(sequence):
     """
 
     compdict = {
-    "A" : "T",
+    "A" : "U",
     "G" : "C",
     "C" : "G",
-    "T" : "A"
+    "U" : "A"
     }
 
-    reversed = sequence[::-1]
+    reversed = sequence[::-1].lower()
     revcomplement = ""
 
-    if len(reversed) > 0:
-        for item in reversed:
-            if item in compdict.keys():
-                revcomplement += str(compdict[item])
-        return revcomplement
-    else:
+    if reversed==0:
         return ""
+    else:
+        for letter in reversed.lower():
+            if letter in compdict.keys():
+                revcomplement += compdict[item]
+        return revcomplement.upper()
 
 def get_longest_peptide(rna_sequence, genetic_code):
     """Get the longest peptide encoded by an RNA sequence.
