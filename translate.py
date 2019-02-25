@@ -16,18 +16,34 @@ def translate_sequence(rna_sequence, genetic_code):
 
     if len(rna_sequence) < 3:
         return ""
-    elif ("UGA" or "UAA" or "UAG") in rna_sequence:
+    elif ("UGA" or "UAA" or "UAG") in rna_sequence[0:3]:
         return ""
     
     else:
         aminos = ""
         i = 0
-        for codons in rna_sequence:
-            codon = rna_sequence[i:i+3]
-            if codon in genetic_code.keys():
-                aminos += genetic_code[codon]
+        stopcodons = ["UGA", "UAA", "UAG"]
+        if (len(rna_sequence) % 3 == 0):
+            for codons in rna_sequence:
+                codon = rna_sequence[i:i+3]
+                if codon in stopcodons:
+                    return aminos
+                elif codon in genetic_code.keys():
+                    aminos += genetic_code[codon]
+                    i += 3
+            return aminos
+        else:
+            for codons in rna_sequence:
+                codon = rna_sequence[i:i+3]
                 i += 3
-        return aminos
+                if codon == ("UGA" or "UAG" or "UAA"):
+                    aminos += genetic_code[codon]
+                    return aminos
+                if codon in genetic_code.keys():
+                    aminos += genetic_code[codon]
+            aminos = aminos.upper()
+            return aminos
+
     """else:
         i = 0
         aminos = ""
