@@ -92,7 +92,27 @@ def reverse_and_complement(sequence):
     If `sequence` is empty, and empty string is returned.
     """
 
-    pass
+    compdict = {
+    "A" : "U",
+    "U" : "A",
+    "C" : "G",
+    "G" : "C"
+    }
+    
+    sequence = sequence.upper()
+
+    if len(sequence) == 0:
+        return ""
+
+    rseq = sequence[::-1]
+    rseq = rseq.upper()
+
+    complement = ""
+    for letter in rseq:
+        if letter in compdict.keys():
+            complement += compdict[letter]
+    return complement
+    
 
 
 
