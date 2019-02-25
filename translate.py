@@ -73,11 +73,12 @@ def get_complement(sequence):
     "G" : "C"
     }
 
+    sequence = sequence.upper()
+
     complement = ""
     for letter in sequence:
         if letter in compdict.keys():
-            complement += letter
-    complement = complement.upper()
+            complement += compdict[letter]
     return complement
 
 
