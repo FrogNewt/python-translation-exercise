@@ -16,6 +16,9 @@ def translate_sequence(rna_sequence, genetic_code):
 
     if len(rna_sequence) < 3:
         return ""
+    elif ("UGA" or "UAA" or "UAG") in rna_sequence:
+        return ""
+
 
 
 
