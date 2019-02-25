@@ -18,7 +18,17 @@ def translate_sequence(rna_sequence, genetic_code):
         return ""
     elif ("UGA" or "UAA" or "UAG") in rna_sequence:
         return ""
+    
     else:
+        aminos = ""
+        i = 0
+        for codons in rna_sequence:
+            codon = rna_sequence[i:i+3]
+            if codon in genetic_code.keys():
+                aminos += genetic_code[codon]
+                i += 3
+        return aminos
+    """else:
         i = 0
         aminos = ""
         threebases = ""
@@ -30,7 +40,7 @@ def translate_sequence(rna_sequence, genetic_code):
                 if genetic_code[threebases]:
                     aminos += genetic_code[threebases]
                     threebases = ""
-        return aminos
+        return aminos"""
 
 
 
