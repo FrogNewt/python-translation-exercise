@@ -37,15 +37,7 @@ def get_all_translations(rna_sequence, genetic_code):
     If no amino acids can be translated from `rna_sequence`, an empty list is
     returned.
     """
-    for seq in rna_sequence:
-        if "AUG" in rna_sequence:
-            for seq in rna_sequence:
-                if seq in genetic_code.keys():
-                    translated += genetic_code[seq]
-        elif len(rna_sequence) < 3:
-            return ""
-        else:
-            return ""
+    pass
 
 
 
@@ -56,12 +48,16 @@ def get_reverse(sequence):
 
     If `sequence` is empty, and empty string is returned.
     """
-    reversed = sequence[::-1]
+    sequence = sequence.upper()
 
     if len(sequence) == 0:
         return ""
-    else:
-        return reversed.upper()
+
+    rseq = sequence[::-1]
+    rseq = rseq.upper()
+
+    return rseq
+    #All get_reverse tests cleared
 
 def get_complement(sequence):
     """Get the complement of `sequence`.
@@ -70,17 +66,19 @@ def get_complement(sequence):
 
     If `sequence` is empty, and empty string is returned.
     """
-    compdict = {"A":"U", "G":"C", "C":"G", "U":"A"}
+    compdict = {
+    "A" : "U",
+    "U" : "A",
+    "C" : "G",
+    "G" : "C"
+    }
 
     complement = ""
-
-    if sequence==0:
-        return ""
-    else:
-        for letter in sequence:
-            if letter in compdict.keys().lower():
-                complement = complement + compdict[letter]
-        return complement.upper()
+    for letter in sequence:
+        if letter in compdict.keys():
+            complement += letter
+    complement = complement.upper()
+    return complement
 
 
 
@@ -93,24 +91,7 @@ def reverse_and_complement(sequence):
     If `sequence` is empty, and empty string is returned.
     """
 
-    compdict = {
-    "A" : "U",
-    "G" : "C",
-    "C" : "G",
-    "U" : "A"
-    }
-
-    rseq = sequence[::-1]
-    
-    rcseq = ""
-
-    if len(sequence) < 1:
-        return ""
-
-    for letter in rseq:
-        if letter.upper() in compdict.keys():
-            rcseq += letter.upper()
-    return rcseq
+    pass
 
 
 
@@ -125,22 +106,7 @@ def get_longest_peptide(rna_sequence, genetic_code):
     If no amino acids can be translated from `rna_sequence` nor its reverse and
     complement, an empty list is returned.
     """
-    reversed = rna_sequence[::-1]
-
-    currentacid = ""
-    totalaminos = ""
-    i = 0
-    for letter in rna_sequence:
-        if i < 3:
-            currentacid += letter
-            i += 1
-        elif i == 3:
-            if currentacid in genetic_code.keys():
-                totalaminos += genetic_code[currentacid]
-                i = 0
-                currentacid = ""
-        else:
-            return []
+    pass
 
 
 
