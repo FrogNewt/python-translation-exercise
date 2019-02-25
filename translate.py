@@ -14,7 +14,8 @@ def translate_sequence(rna_sequence, genetic_code):
     an empty string is returned.
     """
 
-    pass
+    if len(rna_sequence) == 0:
+        return ""
 
 
 
@@ -98,7 +99,7 @@ def reverse_and_complement(sequence):
     "C" : "G",
     "G" : "C"
     }
-    
+
     sequence = sequence.upper()
 
     if len(sequence) == 0:
@@ -127,6 +128,8 @@ def get_longest_peptide(rna_sequence, genetic_code):
     If no amino acids can be translated from `rna_sequence` nor its reverse and
     complement, an empty list is returned.
     """
+
+
     pass
 
 
