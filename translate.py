@@ -14,28 +14,10 @@ def translate_sequence(rna_sequence, genetic_code):
     an empty string is returned.
     """
 
+    pass
 
-  
 
-    aminostring = ""
-    i = 0
-    currentacid = ""
-    if len(rna_sequence) < 3:
-        return ""
-        for item in rna_sequence:
-            if (rna_sequence[0:3] == ("UAA" or "UGA" or "UAG")):
-                return ""
-            elif i == 3:
-                if currentacid in genetic_code.keys():
-                    aminostring += genetic_code[currentacid]
-                    i = 0
-            else:
-                currentacid += item
-                i += 1
-    
-    print(currentacid)
-    print(aminostring)
-    return aminostring
+
     
 
 
@@ -118,16 +100,19 @@ def reverse_and_complement(sequence):
     "U" : "A"
     }
 
-    reversed = sequence[::-1].lower()
-    revcomplement = ""
+    rseq = sequence[::-1]
+    
+    rcseq = ""
 
-    if reversed==0:
+    if len(sequence) < 1:
         return ""
-    else:
-        for letter in reversed.lower():
-            if letter in compdict.keys():
-                revcomplement += compdict[item]
-        return revcomplement.upper()
+
+    for letter in rseq:
+        if letter.upper() in compdict.keys():
+            rcseq += letter.upper()
+    return rcseq
+
+
 
 def get_longest_peptide(rna_sequence, genetic_code):
     """Get the longest peptide encoded by an RNA sequence.
