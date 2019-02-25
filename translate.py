@@ -14,7 +14,7 @@ def translate_sequence(rna_sequence, genetic_code):
     an empty string is returned.
     """
 
-    if len(rna_sequence) == 0:
+    if len(rna_sequence) < 3:
         return ""
 
 
