@@ -84,8 +84,41 @@ def get_all_translations(rna_sequence, genetic_code):
     If no amino acids can be translated from `rna_sequence`, an empty list is
     returned.
     """
-    ### NOT READY YET--STILL HAS ALL ERRORS ###
+    upseq = rna_sequence.upper()
+    upseq1 = upseq[0::]
+    upseq2 = upseq[1::]
+    upseq3 = upseq[2::]
+
     start = "AUG"
+    stopcodons = ["UGA", "UAG", "UAA"]
+    started = False
+    aminos1 = ""
+
+    for letter in upseq1:
+        codon = ""
+        if len(codon) < 3:
+            codon += letter
+        elif started and len(codon) == 3:
+            if codon in genetic_code.keys():
+                aminos1 += genetic_code[codon]
+                codon = ""
+        elif len(codon) == 3:
+            if codon == start:
+                started = True
+
+    masteraminos = []
+
+    if len(aminos1) > 0:
+        masteraminos.append(aminos1)
+
+    return masteraminos
+
+
+
+    
+
+    ### CODE FROM HERE WILL PRODUCE EIGHT ERRORS ###
+    """start = "AUG"
     sequence = rna_sequence.upper()
     startpos = rna_sequence.find(start)
     stopcodons = ["UGA", "UAA", "UAG"]
@@ -146,6 +179,8 @@ def get_all_translations(rna_sequence, genetic_code):
 
     print(aminos1, aminos2, aminos3)
     return masteraminos
+
+    ### END CODE TO PRODUCE EIGHT ERRORS ###"""
 
 
 
