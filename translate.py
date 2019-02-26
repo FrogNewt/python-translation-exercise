@@ -23,16 +23,17 @@ def translate_sequence(rna_sequence, genetic_code):
         aminos = ""
         i = 0
         stopcodons = ["UGA", "UAA", "UAG"]
-        if (len(rna_sequence) % 3 == 0):
-            for codons in rna_sequence:
-                codon = rna_sequence[i:i+3]
-                if codon in stopcodons:
-                    return aminos
-                elif codon in genetic_code.keys():
-                    aminos += genetic_code[codon]
-                    i += 3
-            return aminos
-        else:
+        #if (len(rna_sequence) % 3 == 0):
+        for codons in rna_sequence:
+            codon = rna_sequence[i:i+3]
+            if codon in stopcodons:
+                return aminos
+            elif codon in genetic_code.keys():
+                aminos += genetic_code[codon]
+                print(aminos)
+                i += 3
+        return aminos
+        """else:
             for codons in rna_sequence:
                 codon = rna_sequence[i:i+3]
                 i += 3
@@ -42,7 +43,7 @@ def translate_sequence(rna_sequence, genetic_code):
                 if codon in genetic_code.keys():
                     aminos += genetic_code[codon]
             aminos = aminos.upper()
-            return aminos
+            return aminos"""
 
     """else:
         i = 0
@@ -83,7 +84,30 @@ def get_all_translations(rna_sequence, genetic_code):
     If no amino acids can be translated from `rna_sequence`, an empty list is
     returned.
     """
-    pass
+    ### NOT READY YET--STILL HAS ALL ERRORS ###
+    start = "AUG"
+    sequence = rna_sequence.upper()
+    startpos = rna_sequence.find(start)
+
+    newseq = rna_sequence[startpos::]
+
+    i=0
+    codon = ""
+    aminos = ""
+    for seq in sequence:
+        if len(codon) < 3:
+            codon = newseq[i:i+3]
+            i += 3
+            if codon in genetic_code.keys():
+                aminos += genetic_code[codon]
+                codon = ""
+                print(aminos)
+    return aminos
+
+
+
+
+
 
 
 
@@ -174,9 +198,52 @@ def get_longest_peptide(rna_sequence, genetic_code):
     complement, an empty list is returned.
     """
 
+    compdict = {
+    "A" : "U",
+    "U" : "A",
+    "C" : "G",
+    "G" : "C"
+    }
 
-    pass
+    sequence = rna_sequence.upper()
 
+    caminos = ""
+    for letter in sequence:
+        if letter in compdict.keys():
+            caminos += compdict[letter]
+
+    
+    rseq = sequence[::-1]
+
+    raminos = ""
+    for letter in sequence:
+        if letter in compdict.keys():
+            raminos += compdict[letter]
+
+    aminos = []
+
+    if len(sequence) < 3:
+        return ""
+    elif ("UGA" or "UAA" or "UAG") in rna_sequence[0:3]:
+        return ""
+    
+    else:
+        aminos = ""
+        i = 0
+        stopcodons = ["UGA", "UAA", "UAG"]
+        #if (len(rna_sequence) % 3 == 0):
+        for codons in raminos:
+            codon = raminos[i:i+3]
+            if codon in stopcodons:
+                return raminos
+            elif codon in genetic_code.keys():
+                raminos += genetic_code[codon]
+                print(raminos)
+                i += 3
+        return raminos
+
+
+    return raminos
 
 
 
