@@ -13,18 +13,18 @@ def translate_sequence(rna_sequence, genetic_code):
     If `rna_sequence` is less than 3 bases long, or starts with a stop codon,
     an empty string is returned.
     """
+    rna_sequence = rna_sequence.upper()
 
     if len(rna_sequence) < 3:
         return ""
     elif ("UGA" or "UAA" or "UAG") in rna_sequence[0:3]:
         return ""
-    
     else:
         aminos = ""
         i = 0
         stopcodons = ["UGA", "UAA", "UAG"]
         #if (len(rna_sequence) % 3 == 0):
-        for codons in rna_sequence:
+        for things in rna_sequence:
             codon = rna_sequence[i:i+3]
             if codon in stopcodons:
                 return aminos
@@ -88,44 +88,49 @@ def get_all_translations(rna_sequence, genetic_code):
     start = "AUG"
     sequence = rna_sequence.upper()
     startpos = rna_sequence.find(start)
+    stopcodons = ["UGA", "UAA", "UAG"]
 
-    newseq = rna_sequence[startpos::]
+    newseq = sequence[startpos::]
 
     i=0
     codon = ""
     aminos1 = ""
-    for seq in sequence:
-        if len(codon) < 3:
-            codon = newseq[i:i+3]
-            i += 3
-            if codon in genetic_code.keys():
-                aminos1 += genetic_code[codon]
-                codon = ""
-    print(aminos1)
+    for seq in newseq:
+        codon = newseq[i:i+3]
+        i += 3
+        if codon in stopcodons:
+            return aminos1
+        elif codon in genetic_code.keys():
+            aminos1 += genetic_code[codon]
+            codon = ""
+        #print(aminos1)
+
 
     i=1
     codon = ""
     aminos2 = ""
-    for seq in sequence:
-        if len(codon) < 3:
-            codon = newseq[i:i+3]
-            i += 3
-            if codon in genetic_code.keys():
-                aminos2 += genetic_code[codon]
-                codon = ""
-    print(aminos2)
+    for seq in newseq:
+        codon = newseq[i:i+3]
+        i += 3
+        if codon in stopcodons:
+            return aminos2
+        elif len(codon) > 3 and codon in genetic_code.keys():
+            aminos2 += genetic_code[codon]
+            codon = ""
+        #print(aminos2)
 
     i=2
     codon = ""
     aminos3 = ""
-    for seq in sequence:
-        if len(codon) < 3:
-            codon = newseq[i:i+3]
-            i += 3
-            if codon in genetic_code.keys():
-                aminos3 += genetic_code[codon]
-                codon = ""
-    print(aminos3)
+    for seq in newseq:
+        codon = newseq[i:i+3]
+        i += 3
+        if codon in stopcodons:
+            return aminos3
+        elif codon in genetic_code.keys():
+            aminos3 += genetic_code[codon]
+            codon = ""
+        #print(aminos3)
 
     threeaminos = [aminos1, aminos2, aminos3]
 
@@ -133,16 +138,13 @@ def get_all_translations(rna_sequence, genetic_code):
 
     for somelist in threeaminos:
         if len(somelist) > 0:
-            masteraminos.extend(somelist)
-
-    """if (len(aminos1) == 0) and (len(aminos2) == 0) and (len(aminos3) ==0):
-        masteraminos = []
-    else:
-        masteraminos = [aminos1, aminos2, aminos3]"""
+            masteraminos.append(somelist)
     
     if "*" in masteraminos:
         masteraminos.remove("*")
 
+
+    print(aminos1, aminos2, aminos3)
     return masteraminos
 
 
