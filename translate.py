@@ -30,7 +30,7 @@ def translate_sequence(rna_sequence, genetic_code):
                 return aminos
             elif codon in genetic_code.keys():
                 aminos += genetic_code[codon]
-                print(aminos)
+                #print(aminos)
                 i += 3
         return aminos
         """else:
@@ -93,16 +93,58 @@ def get_all_translations(rna_sequence, genetic_code):
 
     i=0
     codon = ""
-    aminos = ""
+    aminos1 = ""
     for seq in sequence:
         if len(codon) < 3:
             codon = newseq[i:i+3]
             i += 3
             if codon in genetic_code.keys():
-                aminos += genetic_code[codon]
+                aminos1 += genetic_code[codon]
                 codon = ""
-                print(aminos)
-    return aminos
+    print(aminos1)
+
+    i=1
+    codon = ""
+    aminos2 = ""
+    for seq in sequence:
+        if len(codon) < 3:
+            codon = newseq[i:i+3]
+            i += 3
+            if codon in genetic_code.keys():
+                aminos2 += genetic_code[codon]
+                codon = ""
+    print(aminos2)
+
+    i=2
+    codon = ""
+    aminos3 = ""
+    for seq in sequence:
+        if len(codon) < 3:
+            codon = newseq[i:i+3]
+            i += 3
+            if codon in genetic_code.keys():
+                aminos3 += genetic_code[codon]
+                codon = ""
+    print(aminos3)
+
+    threeaminos = [aminos1, aminos2, aminos3]
+
+    masteraminos = []
+
+    for somelist in threeaminos:
+        if len(somelist) > 0:
+            masteraminos.extend(somelist)
+
+    """if (len(aminos1) == 0) and (len(aminos2) == 0) and (len(aminos3) ==0):
+        masteraminos = []
+    else:
+        masteraminos = [aminos1, aminos2, aminos3]"""
+    
+    if "*" in masteraminos:
+        masteraminos.remove("*")
+
+    return masteraminos
+
 
 
 
@@ -238,7 +280,7 @@ def get_longest_peptide(rna_sequence, genetic_code):
                 return raminos
             elif codon in genetic_code.keys():
                 raminos += genetic_code[codon]
-                print(raminos)
+                #print(raminos)
                 i += 3
         return raminos
 
