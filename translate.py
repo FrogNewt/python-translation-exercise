@@ -93,23 +93,77 @@ def get_all_translations(rna_sequence, genetic_code):
     stopcodons = ["UGA", "UAG", "UAA"]
     started = False
     aminos1 = ""
+    aminos2 = ""
+    aminos3 = ""
+    i = 0
 
-    for letter in upseq1:
+    for i in range(0,len(upseq1)):
+        codon = ""
+        if len(codon) < 2:
+            codon = upseq[i:i+3]
+            if codon == start:
+                started = True
+            if started == True:
+                if codon in genetic_code.keys():
+                    aminos1 += genetic_code[codon]
+                    print(aminos1)
+            i + 3
+        elif started and len(codon) == 3:
+            if codon in genetic_code.keys():
+                aminos1 += genetic_code[codon]
+                i + 3
+                codon = ""
+        elif len(codon) == 3:
+            if codon == start:
+                started = True
+                aminos1 += genetic_code[codon]
+                codon = ""
+                i + 3
+
+    started = False
+    for letter in upseq2:
         codon = ""
         if len(codon) < 3:
             codon += letter
         elif started and len(codon) == 3:
             if codon in genetic_code.keys():
-                aminos1 += genetic_code[codon]
+                aminos2 += genetic_code[codon]
                 codon = ""
         elif len(codon) == 3:
             if codon == start:
                 started = True
+                aminos2 += genetic_code[codon]
+                codon = ""
+
+    started = False
+    for letter in upseq3:
+        codon = ""
+        if len(codon) < 3:
+            codon += letter
+        elif started and len(codon) == 3:
+            if codon in genetic_code.keys():
+                aminos3 += genetic_code[codon]
+                codon = ""
+        elif len(codon) == 3:
+            if codon == start:
+                started = True
+                aminos2 += genetic_code[codon]
+                codon = ""
+
+
 
     masteraminos = []
-
+    print(aminos1)
     if len(aminos1) > 0:
         masteraminos.append(aminos1)
+
+    print(aminos2)
+    if len(aminos2) > 0:
+        masteraminos.append(aminos2)
+
+    print(aminos3)
+    if len(aminos3) > 0:
+        masteraminos.append(aminos3)
 
     return masteraminos
 
