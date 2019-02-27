@@ -90,156 +90,28 @@ def get_all_translations(rna_sequence, genetic_code):
     upseq3 = upseq[2::]
 
     start = "AUG"
-    stopcodons = ["UGA", "UAG", "UAA"]
+    stopcodons = ["UGA", "UAG", "UAA", "*"]
     started = False
     aminos1 = ""
     aminos2 = ""
     aminos3 = ""
     i = 0
 
+    print(upseq1, upseq2, upseq3)
+
+    upseq1done = []
+
     for i in range(0,len(upseq1)):
-        codon = ""
-        if len(codon) < 2:
-            codon = upseq[i:i+3]
-            if codon == start:
-                started = True
-            if started == True:
-                if codon in genetic_code.keys():
-                    aminos1 += genetic_code[codon]
-                    print(aminos1)
-            i + 3
-        elif started and len(codon) == 3:
-            if codon in genetic_code.keys():
-                aminos1 += genetic_code[codon]
-                i + 3
-                codon = ""
-        elif len(codon) == 3:
-            if codon == start:
-                started = True
-                aminos1 += genetic_code[codon]
-                codon = ""
-                i + 3
+        if upseq[i:i+3] == start:
+            upseq1done = translate_sequence(upseq1, genetic_code)
+            return upseq1done
+            break
+        elif upseq[i:i+3] != start:
+            i+1
+        elif len(upseq1) == 0:
+            upseq1done = []
 
-    started = False
-    for letter in upseq2:
-        codon = ""
-        if len(codon) < 3:
-            codon += letter
-        elif started and len(codon) == 3:
-            if codon in genetic_code.keys():
-                aminos2 += genetic_code[codon]
-                codon = ""
-        elif len(codon) == 3:
-            if codon == start:
-                started = True
-                aminos2 += genetic_code[codon]
-                codon = ""
-
-    started = False
-    for letter in upseq3:
-        codon = ""
-        if len(codon) < 3:
-            codon += letter
-        elif started and len(codon) == 3:
-            if codon in genetic_code.keys():
-                aminos3 += genetic_code[codon]
-                codon = ""
-        elif len(codon) == 3:
-            if codon == start:
-                started = True
-                aminos2 += genetic_code[codon]
-                codon = ""
-
-
-
-    masteraminos = []
-    print(aminos1)
-    if len(aminos1) > 0:
-        masteraminos.append(aminos1)
-
-    print(aminos2)
-    if len(aminos2) > 0:
-        masteraminos.append(aminos2)
-
-    print(aminos3)
-    if len(aminos3) > 0:
-        masteraminos.append(aminos3)
-
-    return masteraminos
-
-
-
-    
-
-    ### CODE FROM HERE WILL PRODUCE EIGHT ERRORS ###
-    """start = "AUG"
-    sequence = rna_sequence.upper()
-    startpos = rna_sequence.find(start)
-    stopcodons = ["UGA", "UAA", "UAG"]
-
-    newseq = sequence[startpos::]
-
-    i=0
-    codon = ""
-    aminos1 = ""
-    for seq in newseq:
-        codon = newseq[i:i+3]
-        i += 3
-        if codon in stopcodons:
-            return aminos1
-        elif codon in genetic_code.keys():
-            aminos1 += genetic_code[codon]
-            codon = ""
-        #print(aminos1)
-
-
-    i=1
-    codon = ""
-    aminos2 = ""
-    for seq in newseq:
-        codon = newseq[i:i+3]
-        i += 3
-        if codon in stopcodons:
-            return aminos2
-        elif len(codon) > 3 and codon in genetic_code.keys():
-            aminos2 += genetic_code[codon]
-            codon = ""
-        #print(aminos2)
-
-    i=2
-    codon = ""
-    aminos3 = ""
-    for seq in newseq:
-        codon = newseq[i:i+3]
-        i += 3
-        if codon in stopcodons:
-            return aminos3
-        elif codon in genetic_code.keys():
-            aminos3 += genetic_code[codon]
-            codon = ""
-        #print(aminos3)
-
-    threeaminos = [aminos1, aminos2, aminos3]
-
-    masteraminos = []
-
-    for somelist in threeaminos:
-        if len(somelist) > 0:
-            masteraminos.append(somelist)
-    
-    if "*" in masteraminos:
-        masteraminos.remove("*")
-
-
-    print(aminos1, aminos2, aminos3)
-    return masteraminos
-
-    ### END CODE TO PRODUCE EIGHT ERRORS ###"""
-
-
-
-
-
+    return upseq1done
 
 
 
