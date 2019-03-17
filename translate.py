@@ -17,7 +17,7 @@ def translate_sequence(rna_sequence, genetic_code):
 
     if len(rna_sequence) < 3:
         return ""
-    elif ("UGA" or "UAA" or "UAG") in rna_sequence[0:3]:
+    elif ("UGA" or "UAA" or "UAG") in  rna_sequence[0:3]:
         return ""
     else:
         aminos = ""
@@ -85,33 +85,76 @@ def get_all_translations(rna_sequence, genetic_code):
     returned.
     """
     upseq = rna_sequence.upper()
-    upseq1 = upseq[0::]
-    upseq2 = upseq[1::]
-    upseq3 = upseq[2::]
+    upseq1 = upseq[0:]
+    upseq2 = upseq[1:]
+    upseq3 = upseq[2:]
+
 
     start = "AUG"
     stopcodons = ["UGA", "UAG", "UAA", "*"]
     started = False
-    aminos1 = ""
-    aminos2 = ""
-    aminos3 = ""
-    i = 0
+
+    preaminos1 = upseq1.find(start)
+
+    aminos1 = upseq1[preaminos1:]
+
+
+    preaminos2 = aminos1[1:]
+
+    startaminos2 = preaminos2.find(start)
+
+    aminos2 = preaminos2[startaminos2:]
+
+    preaminos3 = aminos2[1:]
+
+    startaminos3 = preaminos3.find(start)
+
+    aminos3 = preaminos3[startaminos3:]
+
+    
+    if aminos1:
+        fullaminos1 = translate_sequence(aminos1, genetic_code)
+    else:
+        fullaminos1 = []
+
+    if aminos2:
+        fullaminos2 = translate_sequence(aminos2, genetic_code)
+    else:
+        fullaminos2 = []
+
+    if aminos3:
+        fullaminos3 = translate_sequence(aminos3, genetic_code)
+    else:
+        fullaminos3 = []
+
+    alltogethernow = []
+    if fullaminos1:
+        alltogethernow.append(fullaminos1)
+    if fullaminos2:
+        alltogethernow.append(fullaminos2)
+    if fullaminos3:
+        alltogethernow.append(fullaminos3)
+    #alltogethernow = [fullaminos1, fullaminos2, fullaminos3]
+    #i = 0
+    print(aminos1, aminos2, aminos3)
+
+    return alltogethernow
 
     #print(upseq1, upseq2, upseq3)
 
     upseq1done = []
 
-    for i in range(0,len(upseq1)):
-        if upseq[i:i+3] == start:
-            upseq1done = translate_sequence(upseq1, genetic_code)
-            return upseq1done
-            break
-        elif upseq[i:i+3] != start:
-            i+1
-        elif len(upseq1) == 0:
-            upseq1done = []
+    #for i in range(0,len(upseq1)):
+    #    if upseq[i:i+3] == start:
+    #        upseq1done = translate_sequence(upseq1, genetic_code)
+    #        return upseq1done
+    #        break
+    #    elif upseq[i:i+3] != start:
+    #        i+1
+    #    elif len(upseq1) == 0:
+    #        upseq1done = []
 
-    return upseq1done
+    #return upseq1done
 
 
 
@@ -239,7 +282,41 @@ def get_longest_peptide(rna_sequence, genetic_code):
     complement, an empty list is returned.
     """
 
-    compdict = {
+    ### CURRENT VERSION; ALMOST WORKING ###
+    finalanswer = ""
+
+    basetranslation = translate_sequence(rna_sequence, genetic_code)
+    reverseit = get_reverse(rna_sequence)
+    complement = get_complement(rna_sequence)
+    revcomp = reverse_and_complement(rna_sequence)
+    
+    # It doesn't like the ones above, so many it'll like all the translations in different orders/arrangements?
+    threeframes = get_all_translations(rna_sequence, genetic_code)
+    revthreeframes = get_all_translations(reverseit, genetic_code)
+    compframes = get_all_translations(complement, genetic_code)
+    revcompframes = get_all_translations(revcomp, genetic_code)
+
+
+    #### UGHHHHH, THE DIRECTIONS SAY "REVERSED AND COMPLEMENTED FORM" BUT NOT "REVERSED, PAUSE, AND COMPLEMENTED" (SEPARATE), WHICH IS WHY IT ISN'T WORKING ###
+    everybody = threeframes+revcompframes
+
+    lenlist = []
+    thinglength = 0
+    for thing in everybody:
+        thinglength = len(thing)
+        lenlist.append(thinglength)
+
+    if everybody:
+        thebigwinner = max(everybody, key=len)
+        finalanswer = thebigwinner
+
+    return finalanswer
+
+
+
+
+    # OLD VERSIONS
+    """compdict = {
     "A" : "U",
     "U" : "A",
     "C" : "G",
@@ -284,7 +361,9 @@ def get_longest_peptide(rna_sequence, genetic_code):
         return raminos
 
 
-    return raminos
+    return raminos"""
+
+
 
 
 
