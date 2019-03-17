@@ -2,16 +2,6 @@
 
 import sys
 
-def pop_next_codon(sequence):
-    """Removes and returns the first 3 bases.
-
-    Returns a tuple of a string of the first three bases and a string of the
-    remaining sequence.
-    """
-    codon = sequence[0:3]
-    remaining_seq = sequence[3:]
-    return codon, remaining_seq
-
 def translate_sequence(rna_sequence, genetic_code):
     """Translates a sequence of RNA into a sequence of amino acids.
 
@@ -24,17 +14,59 @@ def translate_sequence(rna_sequence, genetic_code):
     an empty string is returned.
     """
     rna_sequence = rna_sequence.upper()
-    amino_acid_list = []
-    while True:
-        if len(rna_sequence) < 3:
-            break
-        codon, remaining_seq = pop_next_codon(rna_sequence)
-        rna_sequence = remaining_seq
-        aa = genetic_code[codon]
-        if aa == "*":
-            break
-        amino_acid_list.append(aa)
-    return "".join(amino_acid_list)
+
+    if len(rna_sequence) < 3:
+        return ""
+    elif ("UGA" or "UAA" or "UAG") in rna_sequence[0:3]:
+        return ""
+    else:
+        aminos = ""
+        i = 0
+        stopcodons = ["UGA", "UAA", "UAG"]
+        #if (len(rna_sequence) % 3 == 0):
+        for things in rna_sequence:
+            codon = rna_sequence[i:i+3]
+            if codon in stopcodons:
+                return aminos
+            elif codon in genetic_code.keys():
+                aminos += genetic_code[codon]
+                #print(aminos)
+                i += 3
+        return aminos
+        """else:
+            for codons in rna_sequence:
+                codon = rna_sequence[i:i+3]
+                i += 3
+                if codon == ("UGA" or "UAG" or "UAA"):
+                    aminos += genetic_code[codon]
+                    return aminos
+                if codon in genetic_code.keys():
+                    aminos += genetic_code[codon]
+            aminos = aminos.upper()
+            return aminos"""
+
+    """else:
+        i = 0
+        aminos = ""
+        threebases = ""
+        for letter in rna_sequence:
+            if len(threebases) < 3:
+                threebases += rna_sequence[i]
+                i += 1
+            elif len(threebases) == 3:
+                if genetic_code[threebases]:
+                    aminos += genetic_code[threebases]
+                    threebases = ""
+        return aminos"""
+
+
+
+
+
+
+
+    
+
 
 
 def get_all_translations(rna_sequence, genetic_code):
@@ -52,21 +84,37 @@ def get_all_translations(rna_sequence, genetic_code):
     If no amino acids can be translated from `rna_sequence`, an empty list is
     returned.
     """
-    rna_sequence = rna_sequence.upper()
-    number_of_bases = len(rna_sequence)
-    last_codon_index = number_of_bases - 3
-    if last_codon_index < 0:
-        return []
-    amino_acid_seq_list = []
-    for base_index in range(last_codon_index + 1):
-        codon = rna_sequence[base_index: base_index + 3]
-        if codon == "AUG":
-            aa_seq = translate_sequence(
-                    rna_sequence = rna_sequence[base_index:],
-                    genetic_code = genetic_code)
-            if aa_seq:
-                amino_acid_seq_list.append(aa_seq)
-    return amino_acid_seq_list
+    upseq = rna_sequence.upper()
+    upseq1 = upseq[0::]
+    upseq2 = upseq[1::]
+    upseq3 = upseq[2::]
+
+    start = "AUG"
+    stopcodons = ["UGA", "UAG", "UAA", "*"]
+    started = False
+    aminos1 = ""
+    aminos2 = ""
+    aminos3 = ""
+    i = 0
+
+    #print(upseq1, upseq2, upseq3)
+
+    upseq1done = []
+
+    for i in range(0,len(upseq1)):
+        if upseq[i:i+3] == start:
+            upseq1done = translate_sequence(upseq1, genetic_code)
+            return upseq1done
+            break
+        elif upseq[i:i+3] != start:
+            i+1
+        elif len(upseq1) == 0:
+            upseq1done = []
+
+    return upseq1done
+
+
+
 
 def get_reverse(sequence):
     """Reverse orientation of `sequence`.
@@ -75,29 +123,70 @@ def get_reverse(sequence):
 
     If `sequence` is empty, and empty string is returned.
     """
-    seq_list = list(sequence.upper())
-    seq_list.reverse()
-    rev_seq = "".join(seq_list)
-    return rev_seq
+    
+    ### JAMIE'S WAY ###
+    #sequence = sequence.upper()
+    #rev_seq = ""
+
+    #for c in sequence:
+    #    rev_seq += c
+    #return rev_seq
+
+    ### END JAMIE'S WAY ###
+
+    ### BEGIN JAMIE'S SECOND WAY ###
+    sequence = sequence.upper()
+    return sequence[::-1]
+
+    ### END JAMIE'S SECOND WAY ###
+
+    sequence = sequence.upper()
+
+    if len(sequence) == 0:
+        return ""
+
+    rseq = sequence[::-1]
+    rseq = rseq.upper()
+
+    return rseq
+    #All get_reverse tests cleared
 
 def get_complement(sequence):
     """Get the complement of `sequence`.
-
+    
     Returns a string with the complementary sequence of `sequence`.
 
     If `sequence` is empty, and empty string is returned.
     """
-    rna_complement = {
-            'A': 'U',
-            'C': 'G',
-            'G': 'C',
-            'U': 'A',
-            }
-    complementary_seq_list = []
-    for character in sequence:
-        complementary_seq_list.append(rna_complement[character.upper()])
-    complementary_seq = "".join(complementary_seq_list)
-    return complementary_seq
+    ### BEGIN JAMIE'S WAY ###
+
+    # Jamie's way is literally identical to my way minus the variable names
+
+    sequence = sequence.upper()
+
+    #comp_seq = ""
+    #for c in sequence:
+    #    comp_seq += comp_bases[c]
+
+    ### END JAMIE'S WAY ###
+
+
+    compdict = {
+    "A" : "U",
+    "U" : "A",
+    "C" : "G",
+    "G" : "C"
+    }
+
+    sequence = sequence.upper()
+
+    complement = ""
+    for letter in sequence:
+        if letter in compdict.keys():
+            complement += compdict[letter]
+    return complement
+
+
 
 def reverse_and_complement(sequence):
     """Get the reversed and complemented form of `sequence`.
@@ -107,9 +196,36 @@ def reverse_and_complement(sequence):
 
     If `sequence` is empty, and empty string is returned.
     """
-    reverse_seq = get_reverse(sequence)
-    reverse_complement_seq = get_complement(reverse_seq)
-    return reverse_complement_seq
+
+    ### JAMIE'S WAY ###
+
+    return get_reverse(get_complement(sequence))
+
+    ### END JAMIE'S WAY ###
+
+    compdict = {
+    "A" : "U",
+    "U" : "A",
+    "C" : "G",
+    "G" : "C"
+    }
+
+    sequence = sequence.upper()
+
+    if len(sequence) == 0:
+        return ""
+
+    rseq = sequence[::-1]
+    rseq = rseq.upper()
+
+    complement = ""
+    for letter in rseq:
+        if letter in compdict.keys():
+            complement += compdict[letter]
+    return complement
+    
+
+
 
 def get_longest_peptide(rna_sequence, genetic_code):
     """Get the longest peptide encoded by an RNA sequence.
@@ -122,23 +238,56 @@ def get_longest_peptide(rna_sequence, genetic_code):
     If no amino acids can be translated from `rna_sequence` nor its reverse and
     complement, an empty list is returned.
     """
-    peptides = get_all_translations(rna_sequence = rna_sequence,
-            genetic_code = genetic_code)
-    rev_comp_seq = reverse_and_complement(rna_sequence)
-    rev_comp_peptides = get_all_translations(rna_sequence = rev_comp_seq,
-            genetic_code = genetic_code)
-    peptides += rev_comp_peptides
-    if not peptides:
+
+    compdict = {
+    "A" : "U",
+    "U" : "A",
+    "C" : "G",
+    "G" : "C"
+    }
+
+    sequence = rna_sequence.upper()
+
+    caminos = ""
+    for letter in sequence:
+        if letter in compdict.keys():
+            caminos += compdict[letter]
+
+    
+    rseq = sequence[::-1]
+
+    raminos = ""
+    for letter in sequence:
+        if letter in compdict.keys():
+            raminos += compdict[letter]
+
+    aminos = []
+
+    if len(sequence) < 3:
         return ""
-    if len(peptides) < 2:
-        return peptides[0]
-    most_number_of_bases = -1
-    longest_peptide_index = -1
-    for peptide_index, aa_seq in enumerate(peptides):
-        if len(aa_seq) > most_number_of_bases:
-            longest_peptide_index = peptide_index
-            most_number_of_bases = len(aa_seq)
-    return peptides[longest_peptide_index]
+    elif ("UGA" or "UAA" or "UAG") in rna_sequence[0:3]:
+        return ""
+    
+    else:
+        aminos = ""
+        i = 0
+        stopcodons = ["UGA", "UAA", "UAG"]
+        #if (len(rna_sequence) % 3 == 0):
+        for codons in raminos:
+            codon = raminos[i:i+3]
+            if codon in stopcodons:
+                return raminos
+            elif codon in genetic_code.keys():
+                raminos += genetic_code[codon]
+                #print(raminos)
+                i += 3
+        return raminos
+
+
+    return raminos
+
+
+
 
 
 if __name__ == '__main__':
